@@ -3,6 +3,9 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import VideoCard from "../components/VideoCard";
 import axios from "axios";
+import { search } from "../api/youtube";
+import FakeYoutube from "../api/fakeYoutube";
+import Youtube from "../api/youtube";
 
 const Videos = () => {
   const { keyword } = useParams();
@@ -10,8 +13,9 @@ const Videos = () => {
     isLoading,
     error,
     data: videos,
-  } = useQuery(["videos", keyword], async () => {
-    return axios.get(`/videos/${keyword ? "search" : "popular"}.json`).then((res) => res.data.items);
+  } = useQuery(["videos", keyword], () => {
+    const youtube = new FakeYoutube();
+    return youtube.search(keyword);
   });
   return (
     <>
