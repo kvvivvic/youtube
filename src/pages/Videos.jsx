@@ -6,17 +6,12 @@ import axios from "axios";
 import { search } from "../api/youtube";
 import FakeYoutube from "../api/fakeYoutube";
 import Youtube from "../api/youtube";
+import { useYoutubeApi } from "../context/YoutubeApiContext";
 
 const Videos = () => {
   const { keyword } = useParams();
-  const {
-    isLoading,
-    error,
-    data: videos,
-  } = useQuery(["videos", keyword], () => {
-    const youtube = new FakeYoutube();
-    return youtube.search(keyword);
-  });
+  const { youtube } = useYoutubeApi();
+  const { isLoading, error, data: videos } = useQuery(["videos", keyword], () => youtube.search(keyword));
   return (
     <>
       <div>Videos {keyword ? `🔎${keyword}` : "🔥"}</div>
